@@ -1,0 +1,1526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Flagifier: make any flag flutter</title>
+<style>
+:root {
+  box-sizing: border-box;
+  color-scheme: light dark;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --bg: #09090b;
+  --panel: #0c0c0e;
+  --card: #121216;
+  --card-hover: #17171c;
+  --field: #16161a;
+  --overlay: rgba(12, 12, 14, 0.88);
+  --ink: #fafafa;
+  --ink-2: #d4d4d8;
+  --muted: #a1a1aa;
+  --muted-2: #71717a;
+  --line: #232327;
+  --line-2: #2e2e34;
+  --line-3: #3f3f46;
+  --accent: #fafafa;
+  --accent-ink: #09090b;
+  --accent-hover: #ffffff;
+  --accent-press: #d4d4d8;
+  --ring: #e4e4e7;
+  --state-hover: rgba(250, 250, 250, 0.06);
+  --state-press: rgba(250, 250, 250, 0.11);
+  --selection: rgba(250, 250, 250, 0.18);
+  --scrim: rgba(9, 9, 11, 0.72);
+  --hint-ink: #d4d4d8;
+  --hint-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.8);
+  --check: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2309090b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5 6.4 12 13 4.5'/%3E%3C/svg%3E");
+  --c1: #1a1a1e;
+  --c2: #23232a;
+  --ctl-h: 32px;
+  --r-xs: 3px;
+  --r-sm: 5px;
+  --r: 7px;
+  --r-lg: 10px;
+  --r-xl: 13px;
+  --e1: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --e2: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --e3: 0 2px 4px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.45);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --dur: 160ms;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+      --bg: #ffffff;
+      --panel: #fafafa;
+      --card: #ffffff;
+      --card-hover: #f4f4f5;
+      --field: #ffffff;
+      --overlay: rgba(255, 255, 255, 0.9);
+      --ink: #09090b;
+      --ink-2: #27272a;
+      --muted: #71717a;
+      --muted-2: #a1a1aa;
+      --line: #e4e4e7;
+      --line-2: #d4d4d8;
+      --line-3: #a1a1aa;
+      --accent: #18181b;
+      --accent-ink: #fafafa;
+      --accent-hover: #27272a;
+      --accent-press: #3f3f46;
+      --ring: #18181b;
+      --state-hover: rgba(9, 9, 11, 0.05);
+      --state-press: rgba(9, 9, 11, 0.09);
+      --selection: rgba(9, 9, 11, 0.13);
+      --scrim: rgba(250, 250, 250, 0.78);
+      --hint-ink: #3f3f46;
+      --hint-shadow: 0 1px 3px rgba(255, 255, 255, 0.9), 0 0 2px rgba(255, 255, 255, 0.9);
+      --check: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fafafa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5 6.4 12 13 4.5'/%3E%3C/svg%3E");
+      --c1: #ffffff;
+      --c2: #e9e9ec;
+      --e1: 0 1px 2px rgba(9, 9, 11, 0.06);
+      --e2: 0 1px 2px rgba(9, 9, 11, 0.06), 0 2px 6px rgba(9, 9, 11, 0.07);
+      --e3: 0 2px 4px rgba(9, 9, 11, 0.06), 0 8px 24px rgba(9, 9, 11, 0.12);
+  }
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+    --bg: #ffffff;
+    --panel: #fafafa;
+    --card: #ffffff;
+    --card-hover: #f4f4f5;
+    --field: #ffffff;
+    --overlay: rgba(255, 255, 255, 0.9);
+    --ink: #09090b;
+    --ink-2: #27272a;
+    --muted: #71717a;
+    --muted-2: #a1a1aa;
+    --line: #e4e4e7;
+    --line-2: #d4d4d8;
+    --line-3: #a1a1aa;
+    --accent: #18181b;
+    --accent-ink: #fafafa;
+    --accent-hover: #27272a;
+    --accent-press: #3f3f46;
+    --ring: #18181b;
+    --state-hover: rgba(9, 9, 11, 0.05);
+    --state-press: rgba(9, 9, 11, 0.09);
+    --selection: rgba(9, 9, 11, 0.13);
+    --scrim: rgba(250, 250, 250, 0.78);
+    --hint-ink: #3f3f46;
+    --hint-shadow: 0 1px 3px rgba(255, 255, 255, 0.9), 0 0 2px rgba(255, 255, 255, 0.9);
+    --check: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fafafa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5 6.4 12 13 4.5'/%3E%3C/svg%3E");
+    --c1: #ffffff;
+    --c2: #e9e9ec;
+    --e1: 0 1px 2px rgba(9, 9, 11, 0.06);
+    --e2: 0 1px 2px rgba(9, 9, 11, 0.06), 0 2px 6px rgba(9, 9, 11, 0.07);
+    --e3: 0 2px 4px rgba(9, 9, 11, 0.06), 0 8px 24px rgba(9, 9, 11, 0.12);
+}
+:root[data-theme="dark"] { color-scheme: dark; }
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { height: 100%; scroll-padding-top: env(safe-area-inset-top, 0px); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+  font: 13.5px/1.5 "Inter", "Inter var", system-ui, -apple-system, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.005em;
+}
+::selection { background: var(--selection); }
+
+.app { display: grid; grid-template-columns: 1fr 370px; height: 100%; }
+
+.stage { position: relative; overflow: hidden; background: var(--bg); min-height: 0; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; outline: none; }
+.stage.panning { cursor: grabbing; }
+.stage.orbiting { cursor: move; }
+.stage:focus-visible { box-shadow: inset 0 0 0 2px var(--ring); }
+.stage[data-bg="checker"] {
+  background-image: conic-gradient(var(--c1) 25%, var(--c2) 0 50%, var(--c1) 0 75%, var(--c2) 0);
+  background-size: 24px 24px;
+}
+.stage[data-bg="light"] { background: #f4f4f5; }
+.stage[data-bg="dark"] { background: #09090b; }
+.stage[data-bg="sky"] { background: linear-gradient(#9db3c4, #e3e9ec); }
+canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+.stagebar {
+  position: absolute; left: 14px; bottom: 14px; display: flex; gap: 6px; align-items: center;
+  background: var(--overlay);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3); backdrop-filter: blur(12px) saturate(1.3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg); padding: 6px; max-width: calc(100% - 28px);
+  box-shadow: var(--e3);
+}
+.stagebar button { white-space: nowrap; }
+.stagebar span {
+  color: var(--muted); font-size: 11.5px; letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  padding: 0 8px 0 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.hint {
+  position: absolute; top: 14px; left: 14px; right: 14px; pointer-events: none;
+  color: var(--hint-ink); font-size: 11.5px; letter-spacing: 0.02em;
+  text-shadow: var(--hint-shadow);
+  transition: opacity 600ms var(--ease);
+}
+.hint.gone { opacity: 0; }
+.hint .h-touch { display: none; }
+@media (pointer: coarse) { .hint .h-mouse { display: none; } .hint .h-touch { display: inline; } }
+
+.drop {
+  position: absolute; inset: 16px; border: 1.5px dashed var(--line-3); border-radius: var(--r-xl);
+  display: none; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 500; letter-spacing: 0.01em; color: var(--ink);
+  background: var(--scrim);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+.stage.dragging .drop { display: flex; }
+.nogl {
+  position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+  padding: 24px; text-align: center; color: var(--muted); font-size: 13px;
+}
+
+.panel {
+  overflow: auto; -webkit-overflow-scrolling: touch;
+  background: var(--panel); border-left: 1px solid var(--line);
+  padding: 22px 18px calc(44px + env(safe-area-inset-bottom, 0px));
+  min-height: 0;
+  scrollbar-width: thin; scrollbar-color: var(--line-3) transparent;
+}
+.panel::-webkit-scrollbar { width: 10px; }
+.panel::-webkit-scrollbar-track { background: transparent; }
+.panel::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 999px; border: 3px solid var(--panel); }
+.panel::-webkit-scrollbar-thumb:hover { background: var(--line-3); }
+
+.panel-head { margin: 0 0 14px; }
+.panel-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+h1 { margin: 0; color: var(--ink); font: 600 19px/1.2 inherit; letter-spacing: -0.015em; }
+.themebar {
+  display: inline-flex; flex: none; gap: 2px; padding: 2px;
+  background: var(--field); border: 1px solid var(--line-2);
+  border-radius: var(--r); box-shadow: var(--e1);
+}
+.themebar button {
+  min-height: 0; padding: 4px 8px; gap: 0;
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--muted); background: transparent; border: 0; border-radius: var(--r-xs); box-shadow: none;
+}
+.themebar button:hover { color: var(--ink); background: var(--state-hover); border: 0; box-shadow: none; }
+.themebar button[aria-pressed="true"] { color: var(--accent-ink); background: var(--accent); }
+.lede { margin: 6px 0 14px; color: var(--muted); font-size: 12.5px; line-height: 1.55; max-width: 44ch; }
+.top-actions { margin: 0; }
+
+details {
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: var(--r-lg);
+  margin: 0 0 8px;
+  padding: 0 14px;
+  box-shadow: var(--e1);
+  transition: border-color var(--dur) var(--ease);
+}
+details:hover { border-color: var(--line-2); }
+details[open] { border-color: var(--line-2); padding-bottom: 14px; }
+details > *:last-child { margin-bottom: 0; }
+
+summary {
+  cursor: pointer; list-style: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin: 0 -14px; padding: 11px 14px;
+  font: 600 11px/1.3 inherit;
+  text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--muted);
+  border-radius: var(--r-lg);
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+summary::-webkit-details-marker { display: none; }
+summary:hover { color: var(--ink); background: var(--state-hover); }
+details[open] > summary { color: var(--ink); border-radius: var(--r-lg) var(--r-lg) 0 0; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+summary::after {
+  content: ""; flex: none; width: 7px; height: 7px;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 200ms var(--ease);
+  opacity: 0.75;
+}
+details[open] > summary::after { transform: translateY(1px) rotate(225deg); }
+
+summary:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, .filebtn:focus-within {
+  outline: 2px solid var(--ring); outline-offset: 2px; border-radius: var(--r);
+}
+summary:focus-visible { border-radius: var(--r-lg); }
+
+.row { display: grid; grid-template-columns: 1fr auto; column-gap: 8px; align-items: center; margin: 10px 0; }
+.row label { color: var(--ink-2); font-size: 12.5px; }
+.row output {
+  color: var(--muted); font-variant-numeric: tabular-nums;
+  font-size: 11.5px; letter-spacing: 0.01em;
+  background: var(--field); border: 1px solid var(--line);
+  border-radius: var(--r-sm); padding: 1px 6px; min-width: 42px; text-align: center;
+}
+.field { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 10px 0; }
+.field label { color: var(--ink-2); font-size: 12.5px; flex: 1 1 auto; min-width: 0; }
+.field > select, .field > input { flex: 0 0 auto; }
+
+.row input[type="range"] {
+  grid-column: 1 / -1; width: 100%; margin: 8px 0 2px;
+  -webkit-appearance: none; appearance: none; background: transparent; height: 18px;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 999px; background: var(--line-2);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 14px; margin-top: -5px;
+  border-radius: 999px; background: var(--accent);
+  border: 0; box-shadow: var(--e1), 0 0 0 0 var(--state-press);
+  transition: box-shadow var(--dur) var(--ease);
+}
+input[type="range"]:hover::-webkit-slider-thumb { box-shadow: var(--e1), 0 0 0 7px var(--state-hover); }
+input[type="range"]:active::-webkit-slider-thumb { box-shadow: var(--e1), 0 0 0 9px var(--state-press); }
+input[type="range"]::-moz-range-track { height: 4px; border-radius: 999px; background: var(--line-2); }
+input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px; border: 0; border-radius: 999px; background: var(--accent); box-shadow: var(--e1);
+}
+input[type="range"]::-moz-range-progress { height: 4px; border-radius: 999px; background: var(--line-3); }
+
+select, input[type="number"] {
+  font: inherit; font-size: 12.5px; line-height: normal; color: var(--ink); background: var(--field);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r); height: var(--ctl-h); padding: 0 9px; min-width: 0; max-width: 72%;
+  box-shadow: var(--e1);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+select {
+  -webkit-appearance: none; appearance: none;
+  padding-right: 28px;
+  text-overflow: ellipsis;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 15px) calc(50% + 1px), calc(100% - 10px) calc(50% + 1px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+select:hover, input[type="number"]:hover { border-color: var(--line-3); background-color: var(--card-hover); }
+input[type="number"] { width: 92px; font-variant-numeric: tabular-nums; }
+input[type="color"] {
+  -webkit-appearance: none; appearance: none; box-sizing: border-box; flex: none;
+  width: 46px; height: var(--ctl-h); border: 1px solid var(--line-2); border-radius: var(--r);
+  background: var(--field); padding: 0; overflow: hidden; cursor: pointer; box-shadow: var(--e1);
+}
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch { border: 0; border-radius: calc(var(--r) - 1px); }
+input[type="color"]::-moz-color-swatch { border: 0; border-radius: calc(var(--r) - 1px); }
+input[type="color"]:hover { border-color: var(--line-3); }
+
+input[type="checkbox"] {
+  -webkit-appearance: none; appearance: none; flex: none;
+  width: 18px; height: 18px; margin: 0;
+  border: 1px solid var(--line-3); border-radius: var(--r-xs);
+  background-color: var(--field); cursor: pointer;
+  background-repeat: no-repeat; background-position: center; background-size: 11px 11px;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+input[type="checkbox"]:hover { border-color: var(--muted-2); background-color: var(--card-hover); }
+input[type="checkbox"]:checked {
+  background-color: var(--accent); border-color: var(--accent);
+  background-image: var(--check);
+}
+
+button, .filebtn {
+  font: inherit; font-size: 12.5px; font-weight: 500; letter-spacing: 0.01em;
+  color: var(--ink); background: var(--field);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r); min-height: var(--ctl-h); padding: 4px 13px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  box-shadow: var(--e1);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+button:hover, .filebtn:hover { background: var(--card-hover); border-color: var(--line-3); box-shadow: var(--e2); }
+button:active, .filebtn:active { background: var(--state-press); box-shadow: none; }
+button.primary {
+  background: var(--accent); color: var(--accent-ink); border-color: var(--accent);
+  font-weight: 600; padding: 4px 18px; box-shadow: var(--e2);
+}
+button.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); box-shadow: var(--e3); }
+button.primary:active { background: var(--accent-press); border-color: var(--accent-press); }
+button:disabled, button:disabled:hover {
+  opacity: 1; cursor: default;
+  color: var(--muted-2); background: var(--field); border-color: var(--line); box-shadow: none;
+}
+button.primary:disabled, button.primary:disabled:hover {
+  background: var(--line-2); border-color: var(--line-2); color: var(--muted-2);
+}
+.filebtn { position: relative; }
+.filebtn input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+
+.note { color: var(--muted); font-size: 11.5px; line-height: 1.55; margin: 8px 0; }
+details .note:first-of-type { margin-top: 0; }
+progress {
+  width: 100%; height: 6px; margin: 10px 0 4px;
+  -webkit-appearance: none; appearance: none; border: 0;
+  background: var(--line-2); border-radius: 999px; overflow: hidden;
+}
+progress::-webkit-progress-bar { background: var(--line-2); border-radius: 999px; }
+progress::-webkit-progress-value { background: var(--accent); border-radius: 999px; }
+progress::-moz-progress-bar { background: var(--accent); border-radius: 999px; }
+.result { margin: 8px 0 0; }
+.result a {
+  color: var(--ink); font-weight: 500; font-size: 12.5px; word-break: break-all;
+  display: inline-flex; align-items: center;
+  background: var(--field); border: 1px solid var(--line-2);
+  border-radius: var(--r); min-height: var(--ctl-h); padding: 4px 13px;
+  text-decoration: none;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.result a:hover { background: var(--card-hover); border-color: var(--line-3); }
+.result div { margin-top: 8px; }
+
+@media (max-width: 860px) and (orientation: portrait) {
+  .app { grid-template-columns: 1fr; grid-template-rows: minmax(240px, 44%) minmax(0, 1fr); }
+  .panel { border-left: 0; border-top: 1px solid var(--line); padding-left: 16px; padding-right: 16px; }
+  h1 { font-size: 18px; }
+}
+@media (max-width: 860px) and (orientation: landscape) {
+  .app { grid-template-columns: 1fr 310px; }
+  .panel { padding: 14px 14px calc(32px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (pointer: coarse) {
+  :root { --ctl-h: 44px; }
+  select, input[type="number"], input[type="color"] { font-size: 16px; }
+  input[type="range"] { height: 36px; }
+  input[type="range"]::-webkit-slider-thumb { width: 18px; height: 18px; margin-top: -7px; }
+  input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; }
+  input[type="color"] { width: 58px; }
+  input[type="checkbox"] { width: 24px; height: 24px; background-size: 15px 15px; }
+  summary { padding: 14px; }
+  .row { margin: 14px 0; }
+  .stagebar button { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <main class="stage" id="stage" data-bg="checker" tabindex="0" role="img" aria-label="Live preview of the flag fluttering in the wind. Scroll or press plus and minus to zoom. Drag to move. Right-drag or use the arrow keys to turn and tilt. Press 0 to reset the view.">
+    <canvas id="gl"></canvas>
+    <canvas id="pole"></canvas>
+
+    <div class="hint" id="hint">
+      <span class="h-mouse">Scroll to zoom. Drag to move. Right-drag to turn and tilt. Double-click to reset.</span>
+      <span class="h-touch">Drag to turn and tilt. Pinch to zoom. Two fingers to move. Double-tap to reset.</span>
+    </div>
+
+    <div class="drop">Drop an image to use it as the flag</div>
+    <div class="nogl" id="nogl">This tool needs WebGL 2, which this browser does not provide.</div>
+
+    <div class="stagebar">
+      <button id="play" type="button">Pause</button>
+      <button id="resetView" type="button">Reset view</button>
+      <span id="info"></span>
+    </div>
+  </main>
+
+  <aside class="panel">
+
+    <header class="panel-head">
+      <div class="panel-title">
+        <h1>Flagifier</h1>
+        <div class="themebar" role="group" aria-label="Colour theme">
+          <button id="themeAuto" type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
+          <button id="themeLight" type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+          <button id="themeDark" type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+        </div>
+      </div>
+      <p class="lede">Flutter your flag</p>
+      <div class="top-actions">
+        <button id="reset" type="button">Reset all settings</button>
+      </div>
+    </header>
+
+    <details id="d-image" open>
+      <summary>Flag image</summary>
+
+      <div class="btns">
+        <label class="filebtn">Choose image<input id="file" type="file" accept="image/*"></label>
+      </div>
+
+      <div class="note">Or drop a file on the preview.</div>
+
+      <div class="btns" id="samples"></div>
+
+      <div class="field">
+        <label for="hoist">Pole side</label>
+        <select id="hoist">
+          <option value="0">Left (flag flies right)</option>
+          <option value="1">Right (flag flies left)</option>
+          <option value="2">Top (hangs down)</option>
+          <option value="3">Bottom (rises up)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="keyOn">Make a colour transparent</label>
+        <input id="keyOn" type="checkbox">
+      </div>
+
+      <div class="field">
+        <label for="keyColor">Colour to remove</label>
+        <input id="keyColor" type="color" value="#ffffff">
+      </div>
+
+      <div id="keyTolBox"></div>
+    </details>
+
+    <details id="d-motion" open>
+      <summary>Motion</summary>
+      <div id="g-motion"></div>
+    </details>
+
+    <details id="d-camera">
+      <summary>Camera</summary>
+      <div class="note">Turn swings the flag away from you around its pole. Tilt leans it back or forward. Perspective makes the far end smaller. Zoom only changes the preview, not exports.</div>
+      <div id="g-camera"></div>
+    </details>
+
+    <details id="d-light">
+      <summary>Light and edges</summary>
+      <div class="note">Fold shading brightens and darkens the cloth where it folds. Sheen adds a highlight on folds that face the light. Alpha cutoff hides pixels that are more see-through than the value, which trims soft edges.</div>
+      <div id="g-light"></div>
+    </details>
+
+    <details id="d-pole">
+      <summary>Pole and preview</summary>
+
+      <div class="field">
+        <label for="poleOn">Show pole</label>
+        <input id="poleOn" type="checkbox" checked>
+      </div>
+
+      <div class="field">
+        <label for="poleColor">Pole colour</label>
+        <input id="poleColor" type="color" value="#c79a2a">
+      </div>
+
+      <div id="g-pole"></div>
+
+      <div class="field">
+        <label for="bg">Preview background</label>
+        <select id="bg">
+          <option value="checker">Transparent</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="sky">Sky</option>
+        </select>
+      </div>
+    </details>
+
+    <details id="d-export" open>
+      <summary>Export</summary>
+
+      <div class="field">
+        <label for="fmt">Format</label>
+        <select id="fmt">
+          <option value="gif">Animated GIF (on or off transparency)</option>
+          <option value="apng">Animated PNG (full alpha)</option>
+          <option value="zip">PNG sequence in a ZIP (full alpha)</option>
+          <option value="png">Single frame PNG (full alpha)</option>
+          <option value="mp4">MP4 video (H.264, no transparency)</option>
+        </select>
+      </div>
+
+      <div class="field" id="vidBgField" hidden>
+        <label for="vidBg">Video background</label>
+        <input id="vidBg" type="color" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="outW">Flag width, face on (px)</label>
+        <input id="outW" type="number" min="200" max="2400" step="50" value="900">
+      </div>
+
+      <div class="field">
+        <label for="fps">Frames per second</label>
+        <select id="fps">
+          <option>12</option>
+          <option>15</option>
+          <option>20</option>
+          <option selected>24</option>
+          <option>25</option>
+          <option>30</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="ss">Smooth edges (2x supersampling)</label>
+        <input id="ss" type="checkbox" checked>
+      </div>
+
+      <div class="note" id="exinfo"></div>
+
+      <div class="btns">
+        <button id="export" class="primary" type="button">Export</button>
+      </div>
+
+      <progress id="prog" value="0" max="1" hidden></progress>
+      <div class="note" id="status" aria-live="polite"></div>
+      <div class="result" id="result"></div>
+
+      <div class="note">MP4 has no transparency. Use APNG or ZIP for soft edges</div>
+    </details>
+
+  </aside>
+
+</div>
+
+
+<script>
+const crcTable = (function () {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; }
+  return t;
+})();
+function crc32(buf) { let c = -1; for (let i = 0; i < buf.length; i++) c = crcTable[(c ^ buf[i]) & 255] ^ (c >>> 8); return (c ^ -1) >>> 0; }
+
+function u32(n) { return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255]; }
+function pngChunk(type, data) {
+  const out = new Uint8Array(12 + data.length);
+  const dv = new DataView(out.buffer);
+  dv.setUint32(0, data.length);
+  for (let i = 0; i < 4; i++) out[4 + i] = type.charCodeAt(i);
+  out.set(data, 8);
+  dv.setUint32(8 + data.length, crc32(out.subarray(4, 8 + data.length)));
+  return out;
+}
+function parsePNG(buf) {
+  const u = new Uint8Array(buf), dv = new DataView(buf);
+  let p = 8, ihdr = null; const idats = [];
+  while (p < u.length) {
+    const len = dv.getUint32(p);
+    const type = String.fromCharCode(u[p + 4], u[p + 5], u[p + 6], u[p + 7]);
+    const data = u.slice(p + 8, p + 8 + len);
+    if (type === 'IHDR') ihdr = data;
+    if (type === 'IDAT') idats.push(data);
+    p += 12 + len;
+  }
+  return { ihdr: ihdr, idats: idats };
+}
+function buildAPNG(pngBuffers, fps) {
+  const parsed = pngBuffers.map(parsePNG);
+  const parts = [new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]), pngChunk('IHDR', parsed[0].ihdr)];
+  const w = new DataView(parsed[0].ihdr.buffer, parsed[0].ihdr.byteOffset).getUint32(0);
+  const h = new DataView(parsed[0].ihdr.buffer, parsed[0].ihdr.byteOffset).getUint32(4);
+  const actl = new Uint8Array(8); const adv = new DataView(actl.buffer);
+  adv.setUint32(0, parsed.length); adv.setUint32(4, 0);
+  parts.push(pngChunk('acTL', actl));
+  let seq = 0;
+  parsed.forEach(function (pf, i) {
+    const f = new Uint8Array(26); const dv = new DataView(f.buffer);
+    dv.setUint32(0, seq++); dv.setUint32(4, w); dv.setUint32(8, h); dv.setUint32(12, 0); dv.setUint32(16, 0);
+    dv.setUint16(20, 1); dv.setUint16(22, fps); f[24] = 1; f[25] = 0;
+    parts.push(pngChunk('fcTL', f));
+    pf.idats.forEach(function (d) {
+      if (i === 0) parts.push(pngChunk('IDAT', d));
+      else {
+        const fd = new Uint8Array(4 + d.length); new DataView(fd.buffer).setUint32(0, seq++); fd.set(d, 4);
+        parts.push(pngChunk('fdAT', fd));
+      }
+    });
+  });
+  parts.push(pngChunk('IEND', new Uint8Array(0)));
+  return new Blob(parts, { type: 'image/png' });
+}
+function buildZip(files) {
+  const parts = [], central = []; let offset = 0;
+  const enc = new TextEncoder();
+  files.forEach(function (f) {
+    const name = enc.encode(f.name), crc = crc32(f.data);
+    const lh = new Uint8Array(30 + name.length); const dv = new DataView(lh.buffer);
+    dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true); dv.setUint16(6, 0, true); dv.setUint16(8, 0, true);
+    dv.setUint16(10, 0, true); dv.setUint16(12, 0x21, true); dv.setUint32(14, crc, true);
+    dv.setUint32(18, f.data.length, true); dv.setUint32(22, f.data.length, true);
+    dv.setUint16(26, name.length, true); dv.setUint16(28, 0, true); lh.set(name, 30);
+    parts.push(lh, f.data);
+    const ch = new Uint8Array(46 + name.length); const cv = new DataView(ch.buffer);
+    cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true); cv.setUint16(6, 20, true); cv.setUint16(8, 0, true);
+    cv.setUint16(10, 0, true); cv.setUint16(12, 0, true); cv.setUint16(14, 0x21, true); cv.setUint32(16, crc, true);
+    cv.setUint32(20, f.data.length, true); cv.setUint32(24, f.data.length, true); cv.setUint16(28, name.length, true);
+    cv.setUint32(42, offset, true); ch.set(name, 46); central.push(ch);
+    offset += lh.length + f.data.length;
+  });
+  let cdSize = 0; central.forEach(function (c) { cdSize += c.length; });
+  const end = new Uint8Array(22); const ev = new DataView(end.buffer);
+  ev.setUint32(0, 0x06054b50, true); ev.setUint16(8, files.length, true); ev.setUint16(10, files.length, true);
+  ev.setUint32(12, cdSize, true); ev.setUint32(16, offset, true);
+  return new Blob(parts.concat(central, [end]), { type: 'application/zip' });
+}
+
+function medianCut(entries, max) {
+  if (entries.length <= max) return entries.map(function (e) { return [e.r, e.g, e.b]; });
+  const boxes = [entries];
+  function range(b) {
+    let rn = 255, rx = 0, gn = 255, gx = 0, bn = 255, bx = 0, cnt = 0;
+    for (const e of b) { cnt += e.c; if (e.r < rn) rn = e.r; if (e.r > rx) rx = e.r; if (e.g < gn) gn = e.g; if (e.g > gx) gx = e.g; if (e.b < bn) bn = e.b; if (e.b > bx) bx = e.b; }
+    const rr = rx - rn, gr = gx - gn, br = bx - bn;
+    const m = Math.max(rr, gr, br);
+    return { m: m, ch: (m === rr) ? 'r' : (m === gr) ? 'g' : 'b', cnt: cnt };
+  }
+  while (boxes.length < max) {
+    let bi = -1, bs = -1;
+    for (let i = 0; i < boxes.length; i++) {
+      if (boxes[i].length < 2) continue;
+      const r = range(boxes[i]); const sc = r.m * Math.sqrt(r.cnt);
+      if (sc > bs) { bs = sc; bi = i; }
+    }
+    if (bi < 0 || bs <= 0) break;
+    const b = boxes[bi], r = range(b);
+    b.sort(function (x, y) { return x[r.ch] - y[r.ch]; });
+    let acc = 0, half = r.cnt / 2, cut = 1;
+    for (let i = 0; i < b.length - 1; i++) { acc += b[i].c; if (acc >= half) { cut = i + 1; break; } cut = i + 1; }
+    boxes.splice(bi, 1, b.slice(0, cut), b.slice(cut));
+  }
+  return boxes.map(function (b) {
+    let r = 0, g = 0, bl = 0, c = 0;
+    for (const e of b) { r += e.r * e.c; g += e.g * e.c; bl += e.b * e.c; c += e.c; }
+    return [Math.round(r / c), Math.round(g / c), Math.round(bl / c)];
+  });
+}
+function lzw(indices, minCode) {
+  const clear = 1 << minCode, eoi = clear + 1;
+  const out = []; let cur = 0, shift = 0, size = minCode + 1, next = eoi + 1;
+  let table = new Map();
+  function emit(code) {
+    cur |= code << shift; shift += size;
+    while (shift >= 8) { out.push(cur & 255); cur >>>= 8; shift -= 8; }
+  }
+  emit(clear);
+  let prefix = indices[0];
+  for (let i = 1; i < indices.length; i++) {
+    const k = indices[i], key = (prefix << 8) | k, found = table.get(key);
+    if (found === undefined) {
+      emit(prefix);
+      if (next === 4096) { emit(clear); next = eoi + 1; size = minCode + 1; table = new Map(); }
+      else { if (next >= (1 << size)) size++; table.set(key, next++); }
+      prefix = k;
+    } else prefix = found;
+  }
+  emit(prefix); emit(eoi);
+  if (shift > 0) out.push(cur & 255);
+  return out;
+}
+function buildGIF(frames, w, h, delayCs) {
+  const hist = new Float64Array(32768);
+  const total = frames.length * w * h, stride = Math.max(1, Math.floor(total / 400000));
+  for (const f of frames) {
+    for (let i = 0; i < w * h; i += stride) {
+      const o = i * 4; if (f[o + 3] < 128) continue;
+      hist[((f[o] >> 3) << 10) | ((f[o + 1] >> 3) << 5) | (f[o + 2] >> 3)]++;
+    }
+  }
+  const entries = [];
+  for (let k = 0; k < 32768; k++) if (hist[k] > 0) entries.push({ r: ((k >> 10) & 31) * 8 + 4, g: ((k >> 5) & 31) * 8 + 4, b: (k & 31) * 8 + 4, c: hist[k] });
+  const pal = medianCut(entries.length ? entries : [{ r: 0, g: 0, b: 0, c: 1 }], 255);
+  const cache = new Int16Array(32768).fill(-1);
+  function nearest(key) {
+    const r = ((key >> 10) & 31) * 8 + 4, g = ((key >> 5) & 31) * 8 + 4, b = (key & 31) * 8 + 4;
+    let best = 0, bd = 1e9;
+    for (let i = 0; i < pal.length; i++) { const dr = pal[i][0] - r, dg = pal[i][1] - g, db = pal[i][2] - b, d = dr * dr * 2 + dg * dg * 4 + db * db * 3; if (d < bd) { bd = d; best = i; } }
+    return best;
+  }
+  const bytes = [];
+  function push(arr) { for (let i = 0; i < arr.length; i++) bytes.push(arr[i]); }
+  push([71, 73, 70, 56, 57, 97, w & 255, w >> 8, h & 255, h >> 8, 0xF7, 0, 0]);
+  for (let i = 0; i < 256; i++) { const c = pal[i] || [0, 0, 0]; bytes.push(c[0], c[1], c[2]); }
+  push([0x21, 0xFF, 0x0B, 78, 69, 84, 83, 67, 65, 80, 69, 50, 46, 48, 3, 1, 0, 0, 0]);
+  const idx = new Uint8Array(w * h);
+  for (const f of frames) {
+    for (let i = 0, o = 0; i < w * h; i++, o += 4) {
+      if (f[o + 3] < 128) { idx[i] = 255; continue; }
+      const key = ((f[o] >> 3) << 10) | ((f[o + 1] >> 3) << 5) | (f[o + 2] >> 3);
+      let c = cache[key]; if (c < 0) { c = nearest(key); cache[key] = c; }
+      idx[i] = c;
+    }
+    push([0x21, 0xF9, 4, 0x09, delayCs & 255, delayCs >> 8, 255, 0]);
+    push([0x2C, 0, 0, 0, 0, w & 255, w >> 8, h & 255, h >> 8, 0, 8]);
+    const data = lzw(idx, 8);
+    for (let p = 0; p < data.length; p += 255) {
+      const n = Math.min(255, data.length - p); bytes.push(n);
+      for (let j = 0; j < n; j++) bytes.push(data[p + j]);
+    }
+    bytes.push(0);
+  }
+  bytes.push(0x3B);
+  return new Blob([new Uint8Array(bytes)], { type: 'image/gif' });
+}
+
+function mp4Buf() {
+  const a = [];
+  return {
+    u16: function (v) { a.push((v >>> 8) & 255, v & 255); return this; },
+    u32: function (v) { a.push((v >>> 24) & 255, (v >>> 16) & 255, (v >>> 8) & 255, v & 255); return this; },
+    str: function (s) { for (let i = 0; i < s.length; i++) a.push(s.charCodeAt(i) & 255); return this; },
+    zero: function (k) { for (let i = 0; i < k; i++) a.push(0); return this; },
+    raw: function (u) { for (let i = 0; i < u.length; i++) a.push(u[i]); return this; },
+    out: function () { return new Uint8Array(a); }
+  };
+}
+function mp4Box(type, payload) {
+  const out = new Uint8Array(8 + payload.length), dv = new DataView(out.buffer);
+  dv.setUint32(0, out.length);
+  for (let i = 0; i < 4; i++) out[4 + i] = type.charCodeAt(i);
+  out.set(payload, 8);
+  return out;
+}
+function mp4Join(parts) {
+  let n = 0; parts.forEach(function (p) { n += p.length; });
+  const out = new Uint8Array(n); let o = 0;
+  parts.forEach(function (p) { out.set(p, o); o += p.length; });
+  return out;
+}
+function mp4Matrix(b) {
+  return b.u32(0x00010000).u32(0).u32(0).u32(0).u32(0x00010000).u32(0).u32(0).u32(0).u32(0x40000000);
+}
+function buildMP4Container(datas, sizes, syncs, w, h, fps, avcC) {
+  const N = sizes.length, movieScale = 1000, movieDur = Math.round(N * 1000 / fps);
+  const ftyp = mp4Box('ftyp', mp4Buf().str('isom').u32(512).str('isom').str('iso2').str('avc1').str('mp41').out());
+  let mdatSize = 8;
+  sizes.forEach(function (s) { mdatSize += s; });
+  const mdatHead = mp4Buf().u32(mdatSize).str('mdat').out();
+  const offsets = []; let at = ftyp.length + 8;
+  sizes.forEach(function (s) { offsets.push(at); at += s; });
+
+  const mvhd = mp4Box('mvhd', mp4Matrix(mp4Buf().u32(0).u32(0).u32(0).u32(movieScale).u32(movieDur)
+    .u32(0x00010000).u16(0x0100).zero(10)).zero(24).u32(2).out());
+  const tkhd = mp4Box('tkhd', mp4Matrix(mp4Buf().u32(3).u32(0).u32(0).u32(1).u32(0).u32(movieDur)
+    .zero(8).u16(0).u16(0).u16(0).u16(0)).u32(w * 65536).u32(h * 65536).out());
+  const mdhd = mp4Box('mdhd', mp4Buf().u32(0).u32(0).u32(0).u32(fps).u32(N).u16(0x55C4).u16(0).out());
+  const hdlr = mp4Box('hdlr', mp4Buf().u32(0).u32(0).str('vide').zero(12).str('VideoHandler').zero(1).out());
+  const vmhd = mp4Box('vmhd', mp4Buf().u32(1).u16(0).u16(0).u16(0).u16(0).out());
+  const dref = mp4Box('dref', mp4Join([mp4Buf().u32(0).u32(1).out(), mp4Box('url ', mp4Buf().u32(1).out())]));
+  const dinf = mp4Box('dinf', dref);
+
+  const avc1 = mp4Box('avc1', mp4Join([
+    mp4Buf().zero(6).u16(1).u16(0).u16(0).zero(12).u16(w).u16(h)
+      .u32(0x00480000).u32(0x00480000).u32(0).u16(1).zero(32).u16(0x0018).u16(0xFFFF).out(),
+    mp4Box('avcC', avcC)
+  ]));
+  const stsd = mp4Box('stsd', mp4Join([mp4Buf().u32(0).u32(1).out(), avc1]));
+  const stts = mp4Box('stts', mp4Buf().u32(0).u32(1).u32(N).u32(1).out());
+  const stsc = mp4Box('stsc', mp4Buf().u32(0).u32(1).u32(1).u32(1).u32(1).out());
+  const stszB = mp4Buf().u32(0).u32(0).u32(N);
+  sizes.forEach(function (s) { stszB.u32(s); });
+  const stsz = mp4Box('stsz', stszB.out());
+  const stcoB = mp4Buf().u32(0).u32(N);
+  offsets.forEach(function (o) { stcoB.u32(o); });
+  const stco = mp4Box('stco', stcoB.out());
+  const stblParts = [stsd, stts];
+  if (syncs.length) {
+    const stssB = mp4Buf().u32(0).u32(syncs.length);
+    syncs.forEach(function (s) { stssB.u32(s); });
+    stblParts.push(mp4Box('stss', stssB.out()));
+  }
+  stblParts.push(stsc, stsz, stco);
+
+  const stbl = mp4Box('stbl', mp4Join(stblParts));
+  const minf = mp4Box('minf', mp4Join([vmhd, dinf, stbl]));
+  const mdia = mp4Box('mdia', mp4Join([mdhd, hdlr, minf]));
+  const trak = mp4Box('trak', mp4Join([tkhd, mdia]));
+  const moov = mp4Box('moov', mp4Join([mvhd, trak]));
+  return new Blob([ftyp, mdatHead].concat(datas, [moov]), { type: 'video/mp4' });
+}
+async function buildMP4(frames, w, h, fps, bgColor, onProgress) {
+  if (typeof VideoEncoder === 'undefined' || typeof VideoFrame === 'undefined') {
+    throw new Error('This browser cannot encode MP4. Use Animated PNG or GIF.');
+  }
+  const ew = w + (w % 2), eh = h + (h % 2);
+  const base = {
+    width: ew, height: eh, framerate: fps, avc: { format: 'avc' },
+    bitrate: Math.min(48000000, Math.max(3000000, Math.round(ew * eh * fps * 0.15)))
+  };
+  const codecs = ['avc1.640034', 'avc1.4D4034', 'avc1.42E034', 'avc1.640028', 'avc1.4D4028', 'avc1.42E028'];
+  let config = null;
+  for (let i = 0; i < codecs.length && !config; i++) {
+    const cfg = Object.assign({}, base, { codec: codecs[i] });
+    try {
+      const sup = await VideoEncoder.isConfigSupported(cfg);
+      if (sup && sup.supported) config = cfg;
+    } catch (e) { }
+  }
+  if (!config) throw new Error('This browser has no H.264 encoder. Use Animated PNG or GIF.');
+
+  const src = document.createElement('canvas'); src.width = w; src.height = h;
+  const sx = src.getContext('2d');
+  const dst = document.createElement('canvas'); dst.width = ew; dst.height = eh;
+  const dx = dst.getContext('2d', { alpha: false });
+
+  const datas = [], sizes = [], syncs = [];
+  let avcC = null, failure = null;
+  const enc = new VideoEncoder({
+    output: function (chunk, meta) {
+      if (!avcC && meta && meta.decoderConfig && meta.decoderConfig.description) {
+        avcC = new Uint8Array(meta.decoderConfig.description);
+      }
+      const d = new Uint8Array(chunk.byteLength);
+      chunk.copyTo(d);
+      datas.push(d); sizes.push(d.length);
+      if (chunk.type === 'key') syncs.push(sizes.length);
+    },
+    error: function (e) { failure = e; }
+  });
+  enc.configure(config);
+  const usPer = 1000000 / fps, gop = Math.max(1, fps * 2);
+  for (let i = 0; i < frames.length; i++) {
+    if (failure) throw failure;
+    sx.putImageData(new ImageData(frames[i], w, h), 0, 0);
+    dx.fillStyle = bgColor; dx.fillRect(0, 0, ew, eh);
+    dx.drawImage(src, 0, 0);
+    const vf = new VideoFrame(dst, { timestamp: Math.round(i * usPer), duration: Math.round(usPer) });
+    enc.encode(vf, { keyFrame: i % gop === 0 });
+    vf.close();
+    if (onProgress) onProgress((i + 1) / frames.length);
+    if (enc.encodeQueueSize > 8) await new Promise(function (r) { setTimeout(r, 0); });
+  }
+  await enc.flush();
+  enc.close();
+  if (failure) throw failure;
+  if (!avcC) throw new Error('The H.264 encoder returned no stream configuration.');
+  if (syncs.length === sizes.length) syncs.length = 0;
+  return buildMP4Container(datas, sizes, syncs, ew, eh, fps, avcC);
+}
+
+(function () {
+  'use strict';
+  const $ = function (id) { return document.getElementById(id); };
+  const TAU = Math.PI * 2;
+
+  const S = {
+    mode: 0, wind: 1, n: 2, loop: 2, rip: 1, turb: 1, gust: 1, hang: 0.5,
+    yaw: 17, pitch: 10, persp: 0.5, dist: 2.1, zoom: 1, panX: 0, panY: 0, shade: 1, sheen: 1, cut: 0.01,
+    poleOn: true, poleThick: 1, poleColor: '#c79a2a', key: false, keyColor: '#ffffff', keyTol: 0.12
+  };
+
+  const VS = [
+    '#version 300 es',
+    'precision highp float;',
+    'layout(location=0) in vec2 a_uv;',
+    'uniform float u_mode,u_Wd,u_wind,u_phase,u_n,u_rip,u_turb,u_gust,u_hang,u_theta,u_phi,u_dist,u_shade,u_sheen;',
+    'uniform vec2 u_off,u_scale;',
+    'out vec2 v_uv; out float v_shade; out float v_spec;',
+    'const float TAU=6.2831853;',
+    'float disp(float s,float t,float L,float Lp){',
+    '  float e=pow(clamp(s/L,0.0,1.0),1.35);',
+    '  float g=1.0+u_gust*(-0.18+0.18*sin(u_phase)+0.10*sin(2.0*u_phase+1.0));',
+    '  float sn=s/L*TAU; float tn=t/Lp;',
+    '  float a=0.055*sin(1.46*u_rip*sn-u_n*u_phase+1.3*tn)',
+    '         +0.015*u_turb*sin(2.7*u_rip*sn-(u_n+1.0)*u_phase+3.1*tn+1.7)',
+    '         +0.025*sin(0.7*u_rip*sn-max(u_n-1.0,1.0)*u_phase-2.0*tn);',
+    '  return a*L*e*g*u_wind;',
+    '}',
+    'void main(){',
+    '  float Wd=u_Wd; float x=a_uv.x*Wd; float y=1.0-a_uv.y;',
+    '  float s,t,L,Lp; vec2 f,perp,pole,piv;',
+    '  if(u_mode<0.5){s=x;t=y;f=vec2(1.0,0.0);perp=vec2(0.0,1.0);L=Wd;Lp=1.0;pole=vec2(0.0,0.0);piv=vec2(0.0,0.5);}',
+    '  else if(u_mode<1.5){s=Wd-x;t=y;f=vec2(-1.0,0.0);perp=vec2(0.0,1.0);L=Wd;Lp=1.0;pole=vec2(Wd,0.0);piv=vec2(Wd,0.5);}',
+    '  else if(u_mode<2.5){s=1.0-y;t=x;f=vec2(0.0,-1.0);perp=vec2(1.0,0.0);L=1.0;Lp=Wd;pole=vec2(0.0,1.0);piv=vec2(Wd*0.5,1.0);}',
+    '  else{s=y;t=x;f=vec2(0.0,1.0);perp=vec2(1.0,0.0);L=1.0;Lp=Wd;pole=vec2(0.0,0.0);piv=vec2(Wd*0.5,0.0);}',
+    '  float h=0.01*L; float acc=0.0;',
+    '  for(int i=0;i<20;i++){',
+    '    float si=(float(i)+0.5)/20.0*s;',
+    '    float sl=(disp(si+h,t,L,Lp)-disp(si-h,t,L,Lp))/(2.0*h);',
+    '    acc+=sl*sl;',
+    '  }',
+    '  acc*=s/20.0;',
+    '  float sd=s-0.5*acc;',
+    '  float z=disp(s,t,L,Lp);',
+    '  float ds=(disp(s+h,t,L,Lp)-disp(s-h,t,L,Lp))/(2.0*h);',
+    '  float dtt=(disp(s,t+h,L,Lp)-disp(s,t-h,L,Lp))/(2.0*h);',
+    '  vec3 n=normalize(vec3(-(ds*f+dtt*perp),1.0));',
+    '  vec3 Ld=normalize(vec3(-0.5,0.55,0.75));',
+    '  float lam=max(dot(n,Ld),0.0);',
+    '  v_shade=max(0.15,1.0+u_shade*1.7*(lam-0.71));',
+    '  v_spec=u_sheen*smoothstep(0.93,1.0,dot(n,normalize(Ld+vec3(0.0,0.0,1.0))));',
+    '  float ct=cos(u_theta); float st=sin(u_theta);',
+    '  float along=sd*ct+z*st;',
+    '  float Zd=-sd*st+z*ct;',
+    '  vec2 P=pole+f*along+perp*t;',
+    '  float e=pow(clamp(s/L,0.0,1.0),1.35);',
+    '  if(u_mode<1.5){P.y-=u_hang*0.20*L*pow(e,1.5)*clamp(1.0-0.45*u_wind,0.0,1.0);}',
+    '  vec2 Pr=P-piv;',
+    '  float cp=cos(u_phi); float sp=sin(u_phi);',
+    '  float Y2=Pr.y*cp-Zd*sp+0.25*z;',
+    '  float Z2=Pr.y*sp+Zd*cp;',
+    '  float DD=u_dist*max(Wd,1.0);',
+    '  float pz=DD/max(DD-Z2,0.3*DD);',
+    '  gl_Position=vec4((vec2(Pr.x,Y2)*pz-u_off)*u_scale,0.0,1.0);',
+    '  v_uv=a_uv;',
+    '}'
+  ].join('\n');
+  const FS = [
+    '#version 300 es',
+    'precision mediump float;',
+    'in vec2 v_uv; in float v_shade; in float v_spec;',
+    'uniform sampler2D u_tex; uniform float u_cut;',
+    'out vec4 o;',
+    'void main(){',
+    '  vec4 c=texture(u_tex,v_uv);',
+    '  if(c.a<=u_cut) discard;',
+    '  vec3 rgb=c.rgb*v_shade+c.a*v_spec*0.45;',
+    '  o=vec4(min(rgb,vec3(c.a)),c.a);',
+    '}'
+  ].join('\n');
+
+  class FlagRenderer {
+    constructor(canvas, antialias) {
+      const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true, antialias: !!antialias });
+      if (!gl) throw new Error('WebGL 2 is not available');
+      this.gl = gl; this.canvas = canvas;
+      const mk = function (type, src) {
+        const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(s));
+        return s;
+      };
+      const p = gl.createProgram();
+      gl.attachShader(p, mk(gl.VERTEX_SHADER, VS)); gl.attachShader(p, mk(gl.FRAGMENT_SHADER, FS));
+      gl.linkProgram(p);
+      if (!gl.getProgramParameter(p, gl.LINK_STATUS)) console.error(gl.getProgramInfoLog(p));
+      this.prog = p; this.u = {};
+      ['u_mode', 'u_Wd', 'u_wind', 'u_phase', 'u_n', 'u_rip', 'u_turb', 'u_gust', 'u_hang', 'u_theta', 'u_phi', 'u_dist', 'u_shade', 'u_sheen', 'u_off', 'u_scale', 'u_tex', 'u_cut']
+        .forEach(function (n) { this.u[n] = gl.getUniformLocation(p, n); }, this);
+      this.tex = gl.createTexture(); this.vao = gl.createVertexArray();
+      this.vbo = gl.createBuffer(); this.ibo = gl.createBuffer(); this.count = 0; this.meshKey = '';
+      this.maxTex = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+    }
+    setImage(src) {
+      const gl = this.gl;
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, this.tex);
+      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
+      gl.generateMipmap(gl.TEXTURE_2D);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      const ext = gl.getExtension('EXT_texture_filter_anisotropic');
+      if (ext) gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, 8);
+    }
+    setMesh(aspect, q) {
+      const key = aspect.toFixed(4) + '/' + q;
+      if (key === this.meshKey) return;
+      this.meshKey = key;
+      const gl = this.gl;
+      let cols = aspect >= 1 ? q : Math.max(10, Math.round(q * aspect));
+      let rows = aspect >= 1 ? Math.max(10, Math.round(q / aspect)) : q;
+      const uv = new Float32Array((cols + 1) * (rows + 1) * 2); let k = 0;
+      for (let r = 0; r <= rows; r++) for (let c = 0; c <= cols; c++) { uv[k++] = c / cols; uv[k++] = r / rows; }
+      const idx = new Uint32Array(cols * rows * 6); k = 0;
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+        const a = r * (cols + 1) + c, b = a + 1, d = a + cols + 1, e = d + 1;
+        idx[k++] = a; idx[k++] = d; idx[k++] = b; idx[k++] = b; idx[k++] = d; idx[k++] = e;
+      }
+      gl.bindVertexArray(this.vao);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.vbo); gl.bufferData(gl.ARRAY_BUFFER, uv, gl.STATIC_DRAW);
+      gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.ibo); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
+      this.count = idx.length;
+    }
+    draw(st, aspect, phase, view) {
+      const gl = this.gl, u = this.u;
+      gl.viewport(0, 0, view.W, view.H);
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      gl.useProgram(this.prog);
+      gl.uniform1f(u.u_mode, st.mode); gl.uniform1f(u.u_Wd, aspect); gl.uniform1f(u.u_wind, st.wind);
+      gl.uniform1f(u.u_phase, phase); gl.uniform1f(u.u_n, st.n); gl.uniform1f(u.u_rip, st.rip);
+      gl.uniform1f(u.u_turb, st.turb); gl.uniform1f(u.u_gust, st.gust); gl.uniform1f(u.u_hang, st.hang);
+      gl.uniform1f(u.u_theta, st.yaw * Math.PI / 180); gl.uniform1f(u.u_phi, st.pitch * Math.PI / 180);
+      gl.uniform1f(u.u_dist, st.dist); gl.uniform1f(u.u_shade, st.shade); gl.uniform1f(u.u_sheen, st.sheen);
+      gl.uniform1f(u.u_cut, st.cut);
+      gl.uniform2f(u.u_off, view.CX, view.CY);
+      gl.uniform2f(u.u_scale, 2 * view.K / view.W, 2 * view.K / view.H);
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, this.tex); gl.uniform1i(u.u_tex, 0);
+      gl.bindVertexArray(this.vao);
+      gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_INT, 0);
+    }
+  }
+
+  let aspect = 2;
+  function proj(s, t, z, st) {
+    const th = st.yaw * Math.PI / 180, ph = st.pitch * Math.PI / 180, m = st.mode, Wd = aspect;
+    const along = s * Math.cos(th) + z * Math.sin(th), Zd = -s * Math.sin(th) + z * Math.cos(th);
+    let P, piv;
+    if (m === 0) { P = [along, t]; piv = [0, 0.5]; }
+    else if (m === 1) { P = [Wd - along, t]; piv = [Wd, 0.5]; }
+    else if (m === 2) { P = [t, 1 - along]; piv = [Wd / 2, 1]; }
+    else { P = [t, along]; piv = [Wd / 2, 0]; }
+    const Pr = [P[0] - piv[0], P[1] - piv[1]];
+    const Y2 = Pr[1] * Math.cos(ph) - Zd * Math.sin(ph) + 0.25 * z, Z2 = Pr[1] * Math.sin(ph) + Zd * Math.cos(ph);
+    const DD = st.dist * Math.max(Wd, 1), pz = DD / Math.max(DD - Z2, 0.3 * DD);
+    return [Pr[0] * pz, Y2 * pz];
+  }
+  function dims(st) { return st.mode < 2 ? { L: aspect, Lp: 1 } : { L: 1, Lp: aspect }; }
+  function poleGeom(st) {
+    const d = dims(st), th = 0.022 * Math.max(aspect, 1) * st.poleThick, vert = st.mode < 2;
+    return { th: th, rf: 1.15 * th, t0: vert ? -0.28 * d.Lp : -0.06 * d.Lp, t1: vert ? 1.08 * d.Lp : 1.06 * d.Lp };
+  }
+  function bboxUnits(st, ampMul) {
+    const d = dims(st), pts = [];
+    [[0, 0], [d.L, 0], [0, d.Lp], [d.L, d.Lp]].forEach(function (c) { pts.push(proj(c[0], c[1], 0, st)); });
+    if (st.poleOn) {
+      const g = poleGeom(st);
+      [-0.8 * g.th, 0.7 * g.th].forEach(function (s) { [g.t0 - 1.1 * g.th, g.t1 + 2.1 * g.rf].forEach(function (t) { pts.push(proj(s, t, 0, st)); }); });
+    }
+    let a = 1e9, b = -1e9, c = 1e9, e = -1e9;
+    pts.forEach(function (p) { if (p[0] < a) a = p[0]; if (p[0] > b) b = p[0]; if (p[1] < c) c = p[1]; if (p[1] > e) e = p[1]; });
+    if (ampMul) {
+      const amp = d.L * (0.11 * st.wind + 0.13 * st.hang * Math.max(0, 1 - 0.45 * st.wind)) * ampMul;
+      a -= amp; b += amp; c -= amp; e += amp;
+    }
+    return { minX: a, maxX: b, minY: c, maxY: e };
+  }
+  function refState() { return Object.assign({}, S, { yaw: 0, pitch: 0, dist: 50, poleOn: true, poleThick: 1 }); }
+  function fitView(W, H) {
+    const bb = bboxUnits(refState(), 0), bw = Math.max(1e-3, bb.maxX - bb.minX), bh = Math.max(1e-3, bb.maxY - bb.minY);
+    const pad = 0.12 * Math.max(bw, bh), w2 = bw + 2 * pad, h2 = bh + 2 * pad;
+    return { W: W, H: H, K: Math.min(W / w2, H / h2) * 0.94 * S.zoom, CX: (bb.minX + bb.maxX) / 2 - S.panX, CY: (bb.minY + bb.maxY) / 2 + S.panY };
+  }
+  function hexRgb(h) { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+  function mixc(a, b, t) { return 'rgb(' + a.map(function (v, i) { return Math.round(v + (b[i] - v) * t); }).join(',') + ')'; }
+  function drawPole(ctx, st, view) {
+    ctx.clearRect(0, 0, view.W, view.H);
+    if (!st.poleOn) return;
+    const g = poleGeom(st);
+    const P = function (s, t) { const p = proj(s, t, 0, st); return [view.W / 2 + (p[0] - view.CX) * view.K, view.H / 2 - (p[1] - view.CY) * view.K]; };
+    const base = hexRgb(st.poleColor), dark = mixc(base, [0, 0, 0], 0.62), mid = mixc(base, [0, 0, 0], 0), hi = mixc(base, [255, 255, 255], 0.28);
+    const tm = (g.t0 + g.t1) / 2, ga = P(-0.55 * g.th, tm), gb = P(0.45 * g.th, tm);
+    const grad = ctx.createLinearGradient(ga[0], ga[1], gb[0], gb[1]);
+    grad.addColorStop(0, dark); grad.addColorStop(0.45, mid); grad.addColorStop(0.7, hi); grad.addColorStop(1, dark);
+    function poly(pts, fill) { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); }
+    poly([P(-0.55 * g.th, g.t0), P(0.45 * g.th, g.t0), P(0.45 * g.th, g.t1), P(-0.55 * g.th, g.t1)], grad);
+    poly([P(-0.8 * g.th, g.t0 - 1.1 * g.th), P(0.7 * g.th, g.t0 - 1.1 * g.th), P(0.7 * g.th, g.t0), P(-0.8 * g.th, g.t0)], dark);
+    const c = P(-0.05 * g.th, g.t1 + g.rf * 0.9), r = g.rf * view.K;
+    const rg = ctx.createRadialGradient(c[0] - r * 0.3, c[1] - r * 0.3, r * 0.1, c[0], c[1], r);
+    rg.addColorStop(0, hi); rg.addColorStop(1, dark);
+    ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(c[0], c[1], r, 0, TAU); ctx.fill();
+  }
+
+  let srcCanvas = null, texCanvas = null, renderer = null, view = null, dirty = true;
+  const stage = $('stage'), glCv = $('gl'), poleCv = $('pole');
+
+  function toCanvas(img, maxSize) {
+    let w = img.naturalWidth || img.width || 1024, h = img.naturalHeight || img.height || 1024;
+    const sc = Math.min(1, maxSize / Math.max(w, h)); w = Math.max(1, Math.round(w * sc)); h = Math.max(1, Math.round(h * sc));
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    c.getContext('2d').drawImage(img, 0, 0, w, h); return c;
+  }
+  function applyKey(c) {
+    if (!S.key) return c;
+    const o = document.createElement('canvas'); o.width = c.width; o.height = c.height;
+    const ctx = o.getContext('2d'); ctx.drawImage(c, 0, 0);
+    const id = ctx.getImageData(0, 0, o.width, o.height), d = id.data, k = hexRgb(S.keyColor), tol = S.keyTol, soft = 0.06;
+    for (let i = 0; i < d.length; i += 4) {
+      const dr = d[i] - k[0], dg = d[i + 1] - k[1], db = d[i + 2] - k[2];
+      const dist = Math.sqrt(dr * dr + dg * dg + db * db) / 441.67;
+      if (dist < tol) d[i + 3] = 0; else if (dist < tol + soft) d[i + 3] = Math.round(d[i + 3] * (dist - tol) / soft);
+    }
+    ctx.putImageData(id, 0, 0); return o;
+  }
+  function alphaStats(c) {
+    const sc = Math.min(1, 160 / Math.max(c.width, c.height)), w = Math.max(1, Math.round(c.width * sc)), h = Math.max(1, Math.round(c.height * sc));
+    const t = document.createElement('canvas'); t.width = w; t.height = h; const x = t.getContext('2d'); x.drawImage(c, 0, 0, w, h);
+    const d = x.getImageData(0, 0, w, h).data; let clear = 0, soft = 0;
+    for (let i = 3; i < d.length; i += 4) { if (d[i] < 8) clear++; else if (d[i] < 248) soft++; }
+    const n = w * h; return { clear: Math.round(100 * clear / n), soft: soft / n > 0.002 };
+  }
+  function updateTexture() {
+    if (!srcCanvas || !renderer) return;
+    texCanvas = applyKey(srcCanvas);
+    renderer.setImage(texCanvas);
+    aspect = Math.min(6, Math.max(0.2, srcCanvas.width / srcCanvas.height));
+    renderer.setMesh(aspect, 200);
+    const st = alphaStats(texCanvas);
+    $('info').textContent = srcCanvas.width + ' by ' + srcCanvas.height + ' px, ' + st.clear + '% transparent, ' + (st.soft ? 'soft edges kept' : 'hard edges');
+    refreshView(); dirty = true;
+  }
+  function setSource(canvas, mode) {
+    srcCanvas = canvas;
+    if (mode !== undefined) { S.mode = mode; $('hoist').value = String(mode); }
+    updateTexture();
+  }
+  function loadURL(url, mode) {
+    return new Promise(function (res, rej) {
+      const img = new Image();
+      img.onload = function () { setSource(toCanvas(img, Math.min(4096, renderer ? renderer.maxTex : 4096)), mode); res(); };
+      img.onerror = function () { $('status').textContent = 'That file could not be read as an image.'; rej(); };
+      img.src = url;
+    });
+  }
+  function sample(kind) {
+    const c = document.createElement('canvas'), x = c.getContext('2d');
+    if (kind === 'flag') {
+      c.width = 1200; c.height = 750;
+      x.fillStyle = '#1f3a5f'; x.fillRect(0, 0, 1200, 250);
+      x.fillStyle = '#f1e4c3'; x.fillRect(0, 250, 1200, 250);
+      x.fillStyle = '#b5532f'; x.fillRect(0, 500, 1200, 250);
+      x.fillStyle = '#e0b520'; x.beginPath(); x.arc(420, 375, 190, 0, TAU); x.fill();
+      x.fillStyle = '#1f3a5f'; x.beginPath(); x.arc(420, 375, 120, 0, TAU); x.fill();
+      x.globalCompositeOperation = 'destination-out'; x.fillStyle = 'rgba(0,0,0,0.55)';
+      x.beginPath(); x.arc(420, 375, 255, 0, TAU); x.arc(420, 375, 205, 0, TAU, true); x.fill();
+      x.globalCompositeOperation = 'destination-in';
+      [[1200, 0, 1160, 0], [0, 0, 0, 40], [0, 750, 0, 710]].forEach(function (p) {
+        const g = x.createLinearGradient(p[0], p[1], p[2], p[3]);
+        g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,1)');
+        x.fillStyle = g; x.fillRect(0, 0, 1200, 750);
+      });
+      x.globalCompositeOperation = 'source-over';
+      return [c, 0];
+    }
+    if (kind === 'pennant') {
+      c.width = 1200; c.height = 600;
+      x.beginPath(); x.moveTo(0, 0); x.lineTo(1200, 300); x.lineTo(0, 600); x.closePath(); x.fillStyle = '#1f3a5f'; x.fill();
+      x.beginPath(); x.moveTo(40, 70); x.lineTo(1000, 300); x.lineTo(40, 530); x.closePath(); x.lineWidth = 14; x.strokeStyle = '#e0b520'; x.stroke();
+      x.fillStyle = '#e0b520'; x.beginPath(); x.arc(250, 300, 70, 0, TAU); x.fill();
+      return [c, 0];
+    }
+    if (kind === 'swallow') {
+      c.width = 1200; c.height = 700;
+      x.beginPath(); x.moveTo(0, 0); x.lineTo(1200, 0); x.lineTo(900, 350); x.lineTo(1200, 700); x.lineTo(0, 700); x.closePath(); x.fillStyle = '#b5532f'; x.fill();
+      x.fillStyle = '#f1e4c3'; x.fillRect(0, 280, 1000, 140);
+      x.fillStyle = '#b5532f'; x.beginPath(); x.arc(240, 350, 120, 0, TAU); x.fill();
+      x.fillStyle = '#f1e4c3'; x.beginPath(); x.arc(240, 350, 70, 0, TAU); x.fill();
+      return [c, 0];
+    }
+    c.width = 600; c.height = 1100;
+    x.beginPath(); x.moveTo(0, 0); x.lineTo(600, 0); x.lineTo(600, 900);
+    [[500, 1100], [400, 900], [300, 1100], [200, 900], [100, 1100], [0, 900]].forEach(function (p) { x.lineTo(p[0], p[1]); });
+    x.closePath(); x.fillStyle = '#3e8a86'; x.fill();
+    x.fillStyle = '#e8dcc0'; x.fillRect(0, 120, 600, 40); x.fillRect(0, 740, 600, 40);
+    x.fillStyle = '#e0b520'; x.beginPath(); x.arc(300, 440, 150, 0, TAU); x.fill();
+    x.fillStyle = '#3e8a86'; x.beginPath(); x.arc(300, 440, 90, 0, TAU); x.fill();
+    return [c, 2];
+  }
+
+  const SLIDERS = {
+    'g-motion': [
+      { id: 'wind', label: 'Wind strength', min: 0, max: 2, step: 0.05, val: 1 },
+      { id: 'n', label: 'Flutter speed (waves per loop)', min: 1, max: 6, step: 1, val: 2 },
+      { id: 'loop', label: 'Loop length', min: 1, max: 6, step: 0.5, val: 2, unit: ' s' },
+      { id: 'rip', label: 'Ripple count', min: 0.5, max: 2, step: 0.05, val: 1 },
+      { id: 'turb', label: 'Turbulence', min: 0, max: 1.5, step: 0.05, val: 1 },
+      { id: 'gust', label: 'Gusts', min: 0, max: 1.5, step: 0.05, val: 1 },
+      { id: 'hang', label: 'Droop in light wind', min: 0, max: 1, step: 0.05, val: 0.5 }
+    ],
+    'g-camera': [
+      { id: 'zoom', label: 'Zoom (preview only)', min: 0.25, max: 4, step: 0.05, val: 1 },
+      { id: 'yaw', label: 'Turn', min: -75, max: 75, step: 1, val: 17, unit: ' deg' },
+      { id: 'pitch', label: 'Tilt', min: -40, max: 40, step: 1, val: 10, unit: ' deg' },
+      { id: 'persp', label: 'Perspective', min: 0, max: 1, step: 0.05, val: 0.5 }
+    ],
+    'g-light': [
+      { id: 'shade', label: 'Fold shading', min: 0, max: 1.5, step: 0.05, val: 1 },
+      { id: 'sheen', label: 'Sheen', min: 0, max: 2, step: 0.05, val: 1 },
+      { id: 'cut', label: 'Alpha cutoff', min: 0, max: 0.95, step: 0.01, val: 0.01 }
+    ],
+    'g-pole': [{ id: 'poleThick', label: 'Pole thickness', min: 0.4, max: 3, step: 0.05, val: 1 }],
+    'keyTolBox': [{ id: 'keyTol', label: 'Colour tolerance', min: 0.01, max: 0.5, step: 0.01, val: 0.12 }]
+  };
+  const REG = {};
+  function fmtv(v, step) { return step >= 1 ? String(v) : v.toFixed(step < 0.1 ? 2 : 1); }
+  Object.keys(SLIDERS).forEach(function (gid) {
+    SLIDERS[gid].forEach(function (c) {
+      const row = document.createElement('div'); row.className = 'row';
+      row.innerHTML = '<label for="' + c.id + '">' + c.label + '</label><output></output><input type="range" id="' + c.id + '" min="' + c.min + '" max="' + c.max + '" step="' + c.step + '" value="' + c.val + '">';
+      $(gid).appendChild(row);
+      const inp = row.querySelector('input'), out = row.querySelector('output');
+      REG[c.id] = { inp: inp, out: out, c: c };
+      const upd = function () { S[c.id] = parseFloat(inp.value); if (c.id === 'persp') S.dist = 1 / (0.02 + 0.9 * S.persp); out.textContent = fmtv(S[c.id], c.step) + (c.unit || ''); };
+      inp.addEventListener('input', function () { upd(); if (c.id === 'keyTol') keyChanged(); else changed(); });
+      upd();
+    });
+  });
+  let keyTimer = 0;
+  function keyChanged() { clearTimeout(keyTimer); keyTimer = setTimeout(updateTexture, 90); }
+  function changed() { refreshView(); dirty = true; updateExInfo(); }
+  $('hoist').addEventListener('change', function () { S.mode = parseInt($('hoist').value, 10); changed(); });
+  $('poleOn').addEventListener('change', function () { S.poleOn = $('poleOn').checked; changed(); });
+  $('poleColor').addEventListener('input', function () { S.poleColor = $('poleColor').value; changed(); });
+  $('bg').addEventListener('change', function () { stage.dataset.bg = $('bg').value; });
+  $('keyOn').addEventListener('change', function () { S.key = $('keyOn').checked; keyChanged(); });
+  $('keyColor').addEventListener('input', function () { S.keyColor = $('keyColor').value; if (S.key) keyChanged(); });
+  $('file').addEventListener('change', function () { const f = $('file').files[0]; if (f) loadFile(f); $('file').value = ''; });
+  function loadFile(f) { if (!/^image\//.test(f.type) && !/\.(svg|png|webp|jpe?g|gif)$/i.test(f.name)) { $('status').textContent = 'Please choose an image file.'; return; } const url = URL.createObjectURL(f); loadURL(url).then(function () { URL.revokeObjectURL(url); }, function () {}); }
+  stage.addEventListener('dragover', function (e) { e.preventDefault(); stage.classList.add('dragging'); });
+  stage.addEventListener('dragleave', function () { stage.classList.remove('dragging'); });
+  stage.addEventListener('drop', function (e) { e.preventDefault(); stage.classList.remove('dragging'); const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
+  [['Generic flag', 'flag'], ['Pennant', 'pennant'], ['Swallowtail', 'swallow'], ['Hanging banner', 'banner']].forEach(function (p) {
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = p[0];
+    b.addEventListener('click', function () { const r = sample(p[1]); setSource(r[0], r[1]); });
+    $('samples').appendChild(b);
+  });
+
+  function resetAll() {
+    Object.keys(SLIDERS).forEach(function (gid) {
+      SLIDERS[gid].forEach(function (c) { const el = $(c.id); el.value = c.val; el.dispatchEvent(new Event('input')); });
+    });
+    $('hoist').value = '0'; S.mode = 0;
+    $('poleOn').checked = true; S.poleOn = true;
+    $('poleColor').value = '#c79a2a'; S.poleColor = '#c79a2a';
+    $('keyOn').checked = false; S.key = false;
+    $('keyColor').value = '#ffffff'; S.keyColor = '#ffffff';
+    $('bg').value = 'checker'; stage.dataset.bg = 'checker';
+    $('fmt').value = 'gif'; $('fps').value = '24'; $('outW').value = '900'; $('ss').checked = true;
+    $('vidBg').value = '#ffffff'; updateFmtUI();
+    S.panX = 0; S.panY = 0; tAcc = 0.35;
+    updateTexture(); changed(); updateExInfo();
+    $('status').textContent = 'All settings are back to their defaults.';
+  }
+  $('reset').addEventListener('click', resetAll);
+
+  let playing = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  let tAcc = 0.35, lastT = performance.now(), phase = 0;
+  const playBtn = $('play');
+  playBtn.textContent = playing ? 'Pause' : 'Play';
+  playBtn.addEventListener('click', function () { playing = !playing; playBtn.textContent = playing ? 'Pause' : 'Play'; lastT = performance.now(); dirty = true; });
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = Math.max(2, Math.round(stage.clientWidth * dpr)), H = Math.max(2, Math.round(stage.clientHeight * dpr));
+    glCv.width = W; glCv.height = H; poleCv.width = W; poleCv.height = H;
+    refreshView(); dirty = true;
+  }
+  function refreshView() {
+    if (!glCv.width) return;
+    view = fitView(glCv.width, glCv.height);
+    drawPole(poleCv.getContext('2d'), S, view);
+  }
+  function frame(now) {
+    const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+    if (playing) { tAcc += dt; dirty = true; }
+    if (dirty && renderer && view) {
+      phase = ((tAcc % S.loop) / S.loop) * TAU;
+      renderer.draw(S, aspect, phase, view); dirty = false;
+    }
+    requestAnimationFrame(frame);
+  }
+
+
+  function setParam(id, v) {
+    const r = REG[id], c = r.c;
+    v = Math.min(c.max, Math.max(c.min, v));
+    S[id] = v; r.inp.value = v; r.out.textContent = fmtv(v, c.step) + (c.unit || '');
+  }
+  function hideHint() { $('hint').classList.add('gone'); }
+  function zoomAt(newZ, mx, my) {
+    newZ = Math.min(4, Math.max(0.25, newZ));
+    if (!view) return;
+    const baseK = view.K / S.zoom, K0 = view.K, K1 = baseK * newZ;
+    const CX0 = view.CX + S.panX, CY0 = view.CY - S.panY;
+    const newCX = view.CX + (mx - view.W / 2) * (1 / K0 - 1 / K1);
+    const newCY = view.CY + (view.H / 2 - my) * (1 / K0 - 1 / K1);
+    S.panX = CX0 - newCX; S.panY = newCY - CY0;
+    setParam('zoom', newZ); changed();
+  }
+  function devScale() { return glCv.width / Math.max(1, glCv.getBoundingClientRect().width); }
+  function panBy(dxCss, dyCss) { if (!view) return; const d = devScale(); S.panX += dxCss * d / view.K; S.panY += dyCss * d / view.K; changed(); }
+  function orbitBy(dxCss, dyCss) { setParam('yaw', S.yaw + dxCss * 0.4); setParam('pitch', S.pitch + dyCss * 0.4); changed(); }
+  function resetView() {
+    S.panX = 0; S.panY = 0;
+    setParam('zoom', 1); setParam('yaw', REG.yaw.c.val); setParam('pitch', REG.pitch.c.val);
+    changed();
+  }
+  $('resetView').addEventListener('click', resetView);
+
+  const ptrs = new Map(); let gmode = null;
+  function pinchState() {
+    const a = Array.from(ptrs.values());
+    if (a.length < 2) return null;
+    return { d: Math.max(1, Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y)), mx: (a[0].x + a[1].x) / 2, my: (a[0].y + a[1].y) / 2 };
+  }
+  let lastPinch = null, lastTap = null;
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  stage.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('.stagebar')) return;
+    stage.focus({ preventScroll: true });
+    const now = performance.now();
+    if (e.button === 0 && ptrs.size === 0 && lastTap && now - lastTap.t < 350 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 16) {
+      lastTap = null; resetView(); hideHint(); e.preventDefault(); return;
+    }
+    if (e.button === 0) lastTap = { t: now, x: e.clientX, y: e.clientY };
+    try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (e.pointerType === 'touch') {
+      if (ptrs.size === 1) gmode = 'orbit'; else { gmode = 'pinch'; lastPinch = pinchState(); }
+    } else if (e.button === 2 || (e.button === 0 && e.shiftKey)) gmode = 'orbit';
+    else if (e.button === 0 || e.button === 1) gmode = 'pan';
+    else gmode = null;
+    stage.classList.toggle('orbiting', gmode === 'orbit'); stage.classList.toggle('panning', gmode === 'pan');
+    hideHint(); e.preventDefault();
+  });
+  stage.addEventListener('pointermove', function (e) {
+    const p = ptrs.get(e.pointerId); if (!p) return;
+    const dx = e.clientX - p.x, dy = e.clientY - p.y;
+    p.x = e.clientX; p.y = e.clientY;
+    if (gmode === 'orbit') orbitBy(dx, dy);
+    else if (gmode === 'pan') panBy(dx, dy);
+    else if (gmode === 'pinch') {
+      const cur = pinchState(); if (!cur || !lastPinch) return;
+      const r = glCv.getBoundingClientRect(), d = devScale();
+      panBy(cur.mx - lastPinch.mx, cur.my - lastPinch.my);
+      zoomAt(S.zoom * cur.d / lastPinch.d, (cur.mx - r.left) * d, (cur.my - r.top) * d);
+      lastPinch = cur;
+    }
+  });
+  function endPtr(e) {
+    ptrs.delete(e.pointerId);
+    if (ptrs.size === 0) { gmode = null; stage.classList.remove('orbiting', 'panning'); }
+    else if (e.pointerType === 'touch') { gmode = ptrs.size >= 2 ? 'pinch' : 'orbit'; lastPinch = pinchState(); }
+  }
+  stage.addEventListener('pointerup', endPtr);
+  stage.addEventListener('pointercancel', endPtr);
+  stage.addEventListener('wheel', function (e) {
+    if (e.target.closest('.stagebar')) return;
+    e.preventDefault();
+    let dy = e.deltaY; if (e.deltaMode === 1) dy *= 16; else if (e.deltaMode === 2) dy *= 300;
+    if (e.ctrlKey) dy *= 4;
+    const r = glCv.getBoundingClientRect(), d = devScale();
+    zoomAt(S.zoom * Math.exp(-dy * 0.0015), (e.clientX - r.left) * d, (e.clientY - r.top) * d);
+    hideHint();
+  }, { passive: false });
+  stage.addEventListener('keydown', function (e) {
+    const k = e.key; let used = true;
+    if (k === 'ArrowLeft') orbitBy(-8, 0); else if (k === 'ArrowRight') orbitBy(8, 0);
+    else if (k === 'ArrowUp') orbitBy(0, -8); else if (k === 'ArrowDown') orbitBy(0, 8);
+    else if (k === '+' || k === '=') zoomAt(S.zoom * 1.1, view ? view.W / 2 : 0, view ? view.H / 2 : 0);
+    else if (k === '-' || k === '_') zoomAt(S.zoom / 1.1, view ? view.W / 2 : 0, view ? view.H / 2 : 0);
+    else if (k === '0') resetView(); else used = false;
+    if (used) { e.preventDefault(); hideHint(); }
+  });
+
+  const themeBtns = Array.prototype.slice.call(document.querySelectorAll('.themebar button'));
+  function applyTheme(choice) {
+    if (choice !== 'light' && choice !== 'dark') choice = 'auto';
+    if (choice === 'auto') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', choice);
+    themeBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === choice)); });
+    try { localStorage.setItem('flagifier-theme', choice); } catch (e) { }
+  }
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () { applyTheme(b.getAttribute('data-theme-choice')); });
+  });
+  (function () {
+    let stored = 'auto';
+    try { stored = localStorage.getItem('flagifier-theme') || 'auto'; } catch (e) { }
+    applyTheme(stored);
+  })();
+
+  function updateFmtUI() { $('vidBgField').hidden = $('fmt').value !== 'mp4'; }
+  $('fmt').addEventListener('change', updateFmtUI);
+  function updateExInfo() {
+    const fps = parseInt($('fps').value, 10), n = Math.max(2, Math.round(S.loop * fps));
+    $('exinfo').textContent = n + ' frames over ' + S.loop + ' s, looping.';
+  }
+  $('fps').addEventListener('change', updateExInfo);
+  const tick = function () { return new Promise(function (r) { setTimeout(r, 0); }); };
+  function blobOf(canvas) { return new Promise(function (r) { canvas.toBlob(r, 'image/png'); }); }
+  function cropData(data, W, x0, y0, w, h) {
+    const o = new Uint8ClampedArray(w * h * 4);
+    for (let y = 0; y < h; y++) o.set(data.subarray(((y + y0) * W + x0) * 4, ((y + y0) * W + x0 + w) * 4), y * w * 4);
+    return o;
+  }
+  async function runExport() {
+    const btn = $('export'), prog = $('prog'), status = $('status'), res = $('result');
+    const fmt = $('fmt').value, fps = parseInt($('fps').value, 10), outW = Math.min(2400, Math.max(200, parseInt($('outW').value, 10) || 900));
+    const N = fmt === 'png' ? 1 : Math.max(2, Math.round(S.loop * fps));
+    const wasPlaying = playing; playing = false;
+    btn.disabled = true; res.textContent = ''; prog.hidden = false; prog.value = 0;
+    try {
+      let ss = $('ss').checked ? 2 : 1;
+      const bbA = bboxUnits(S, 1.4), bbF = bboxUnits(refState(), 0);
+      let K1 = outW / Math.max(1e-3, bbF.maxX - bbF.minX), Wc, Hc;
+      for (;;) {
+        Wc = Math.ceil((bbA.maxX - bbA.minX) * 1.12 * K1 * ss); Hc = Math.ceil((bbA.maxY - bbA.minY) * 1.12 * K1 * ss);
+        if (Wc % ss) Wc += ss - (Wc % ss); if (Hc % ss) Hc += ss - (Hc % ss);
+        if (Math.max(Wc, Hc) <= 7000) break;
+        if (ss > 1) ss = 1; else K1 *= 0.9;
+      }
+      const w1 = Wc / ss, h1 = Hc / ss;
+      const glc = document.createElement('canvas'); glc.width = Wc; glc.height = Hc;
+      const r2 = new FlagRenderer(glc, false); r2.setImage(texCanvas); r2.setMesh(aspect, 320);
+      const hi = document.createElement('canvas'); hi.width = Wc; hi.height = Hc; const hx = hi.getContext('2d');
+      const lo = document.createElement('canvas'); lo.width = w1; lo.height = h1; const lx = lo.getContext('2d', { willReadFrequently: true });
+      lx.imageSmoothingEnabled = true; lx.imageSmoothingQuality = 'high';
+      const v = { W: Wc, H: Hc, K: K1 * ss, CX: (bbA.minX + bbA.maxX) / 2, CY: (bbA.minY + bbA.maxY) / 2 };
+      const poleLayer = document.createElement('canvas'); poleLayer.width = Wc; poleLayer.height = Hc;
+      drawPole(poleLayer.getContext('2d'), S, v);
+      const frames = [];
+      const startPhase = fmt === 'png' ? phase : 0;
+      for (let i = 0; i < N; i++) {
+        const ph = fmt === 'png' ? startPhase : (i / N) * TAU;
+        r2.draw(S, aspect, ph, v);
+        hx.clearRect(0, 0, Wc, Hc); hx.drawImage(glc, 0, 0); hx.drawImage(poleLayer, 0, 0);
+        lx.clearRect(0, 0, w1, h1); lx.drawImage(hi, 0, 0, w1, h1);
+        frames.push(lx.getImageData(0, 0, w1, h1).data);
+        prog.value = (i + 1) / (N + 2); status.textContent = 'Rendering frame ' + (i + 1) + ' of ' + N; await tick();
+      }
+      let x0 = w1, x1 = -1, y0 = h1, y1 = -1;
+      frames.forEach(function (f) {
+        for (let y = 0; y < h1; y++) for (let x = 0; x < w1; x++) if (f[(y * w1 + x) * 4 + 3] > 8) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+      });
+      if (x1 < 0) throw new Error('The flag has no visible pixels to export.');
+      x0 = Math.max(0, x0 - 4); y0 = Math.max(0, y0 - 4); x1 = Math.min(w1 - 1, x1 + 4); y1 = Math.min(h1 - 1, y1 + 4);
+      const cw = x1 - x0 + 1, ch = y1 - y0 + 1;
+      const cropped = frames.map(function (f) { return cropData(f, w1, x0, y0, cw, ch); });
+      status.textContent = 'Encoding'; await tick();
+      let blob, name;
+      if (fmt === 'gif') { blob = buildGIF(cropped, cw, ch, Math.round(100 / fps)); name = 'flag-wind.gif'; }
+      else if (fmt === 'mp4') {
+        blob = await buildMP4(cropped, cw, ch, fps, $('vidBg').value, function (f) {
+          prog.value = (N + 1 + f) / (N + 2); status.textContent = 'Encoding video ' + Math.round(f * 100) + '%';
+        });
+        name = 'flag-wind.mp4';
+      }
+      else {
+        const pngs = [];
+        for (let i = 0; i < cropped.length; i++) {
+          const c = document.createElement('canvas'); c.width = cw; c.height = ch;
+          c.getContext('2d').putImageData(new ImageData(cropped[i], cw, ch), 0, 0);
+          pngs.push(await (await blobOf(c)).arrayBuffer()); prog.value = (N + 1) / (N + 2) * (i + 1) / cropped.length + 0.0; await tick();
+        }
+        if (fmt === 'png') { blob = new Blob([pngs[0]], { type: 'image/png' }); name = 'flag-wind-frame.png'; }
+        else if (fmt === 'apng') { blob = buildAPNG(pngs, fps); name = 'flag-wind.png'; }
+        else { blob = buildZip(pngs.map(function (b, i) { return { name: 'flag_' + String(i).padStart(3, '0') + '.png', data: new Uint8Array(b) }; })); name = 'flag-wind-frames.zip'; }
+      }
+      const url = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = url; a.download = name; a.textContent = 'Download ' + name;
+      res.innerHTML = ''; res.appendChild(a);
+      const info = document.createElement('div'); info.className = 'note';
+      info.textContent = cw + ' by ' + ch + ' px, ' + N + (N === 1 ? ' frame, ' : ' frames, ') + (blob.size / 1048576).toFixed(1) + ' MB';
+      res.appendChild(info);
+      status.textContent = 'Done.'; prog.value = 1;
+    } catch (e) {
+      console.error(e); status.textContent = 'Export failed: ' + (e && e.message ? e.message : 'unknown error');
+    } finally {
+      btn.disabled = false; playing = wasPlaying; lastT = performance.now(); dirty = true; setTimeout(function () { prog.hidden = true; }, 600);
+    }
+  }
+  $('export').addEventListener('click', runExport);
+
+  try { renderer = new FlagRenderer(glCv, true); }
+  catch (e) { $('nogl').style.display = 'flex'; $('export').disabled = true; renderer = null; }
+  if (window.matchMedia && window.matchMedia('(max-width: 860px)').matches) {
+    Array.prototype.forEach.call(document.querySelectorAll('details'), function (d) { d.open = (d.id === 'd-image' || d.id === 'd-motion'); });
+  }
+  window.addEventListener('resize', resize);
+  new ResizeObserver(resize).observe(stage);
+  resize(); updateExInfo(); updateFmtUI();
+  if (renderer) { const r0 = sample('flag'); setSource(r0[0], r0[1]); requestAnimationFrame(frame); }
+})();
+</script>
+</body>
+</html>
