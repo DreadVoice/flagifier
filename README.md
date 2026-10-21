@@ -2,17 +2,19 @@
 
 Make any flag image flutter. A single self-contained HTML file, no build step and no dependencies.
 
+**[Try Flagifier](https://flagifier.pages.dev/)**
+
 Open `index.html` in a browser. Drop in a PNG, WebP or SVG, adjust the motion, camera and lighting, then export.
 
 ## Export formats
 
 | Format | Transparency |
 | --- | --- |
-| Animated GIF | on or off per pixel |
-| Animated PNG | full alpha |
-| PNG sequence (ZIP) | full alpha |
-| Single frame PNG | full alpha |
-| MP4 (H.264) | none, laid over a background colour |
+| Animated GIF | On or off per pixel |
+| Animated PNG | Full alpha |
+| PNG sequence (ZIP) | Full alpha |
+| Single frame PNG | Full alpha |
+| MP4 (H.264) | None, laid over a background colour |
 
 ## Requirements
 
